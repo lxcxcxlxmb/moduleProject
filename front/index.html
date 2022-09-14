@@ -115,7 +115,7 @@
     </main>
 
     <script>
-        const ENDPOINT = "http://localhost:3003";
+        const ENDPOINT = "http://localhost:3000";
 
         const enter = async () => {
             const name = document.getElementById("name").value;
@@ -130,16 +130,6 @@
                 }, (error) => {
                     Swal.fire(`Error to validate: ${error.response.data.error} `)
                 });
-            // axios.post(`localhost:3003/users`, {
-            //     name: name,
-            //     password: password,
-            // })
-            //     .then((response) => {
-            //         window.location.href = "home.html";
-            //     }, (error) => {
-            //         Swal.fire(`Error: ${response.data.error} `)
-            //         console.log(error)
-            //     });
         }
     </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

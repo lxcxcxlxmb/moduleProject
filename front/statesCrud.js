@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:3003";
+const ENDPOINT = "http://localhost:3000";
 
 const loadTable = () => {
     axios.get(`${ENDPOINT}/states`)

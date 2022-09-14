@@ -1,27 +1,23 @@
 const { DataTypes, Model } = require('sequelize');
 const db = require('../db');
 
-class Log extends Model { };
+class Format extends Model { };
 
-Log.init({
+Format.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
-  action: {
+  description: {
     type: DataTypes.STRING,
-    allowNull: false
-  },
-  date: {
-    type: DataTypes.DATE,
     allowNull: false
   }
 }, {
   sequelize: db,
-  tableName: 'logs',
-  modelName: 'Log'
+  tableName: 'formats',
+  modelName: 'Format'
 });
 
-module.exports = Log;
+module.exports = Format;

@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:3003";
+const ENDPOINT = "http://localhost:3000";
 
 const loadTable = () => {
     axios.get(`${ENDPOINT}/publishers`)
@@ -85,7 +85,7 @@ const getCities = () => {
 const showPublisherCreateBox = async () => {
     let cities = await getCities();
     cities = cities.data;
-    let optionHtml = '';
+    let optionHtml = `<option value="" disabled selected hidden>City</option>`;
     for (const city of cities) {
         optionHtml += `<option value="` + city.id + `">` + city.name + `</option>`
     }
@@ -108,7 +108,7 @@ const showPublisherCreateBox = async () => {
 const showPublisherEditBox = async (id) => {
     let cities = await getCities();
     cities = cities.data;
-    let optionHtml = '';
+    let optionHtml = `<option value="" disabled selected hidden>City</option>`;
     for (const city of cities) {
         optionHtml += `<option value="` + city.id + `">` + city.name + `</option>`
     }

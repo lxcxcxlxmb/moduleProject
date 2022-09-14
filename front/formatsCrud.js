@@ -1,7 +1,7 @@
 const ENDPOINT = "http://localhost:3000";
 
 const loadTable = () => {
-    axios.get(`${ENDPOINT}/categories`)
+    axios.get(`${ENDPOINT}/formats`)
         .then((response) => {
             if (response.status === 200) {
                 const data = response.data;
@@ -10,8 +10,8 @@ const loadTable = () => {
                     trHTML += '<tr>';
                     trHTML += '<td>' + element.id + '</td>';
                     trHTML += '<td>' + element.description + '</td>';
-                    trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showCategoryEditBox(' + element.id + ')">Edit</button>';
-                    trHTML += '<button type="button" class="btn btn-outline-danger" onclick="categoryDelete(' + element.id + ')">Del</button></td>';
+                    trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showFormatEditBox(' + element.id + ')">Edit</button>';
+                    trHTML += '<button type="button" class="btn btn-outline-danger" onclick="formatDelete(' + element.id + ')">Del</button></td>';
                     trHTML += "</tr>";
                 });
                 document.getElementById("mytable").innerHTML = trHTML;
@@ -21,84 +21,84 @@ const loadTable = () => {
 
 loadTable();
 
-const categoryCreate = () => {
+const formatCreate = () => {
     const description = document.getElementById("description").value;
 
-    axios.post(`${ENDPOINT}/categories`, {
+    axios.post(`${ENDPOINT}/formats`, {
         description: description,
     })
         .then((response) => {
-            Swal.fire(`Category ${response.data.description} created`);
+            Swal.fire(`${response.data.description} format created`);
             loadTable();
         }, (error) => {
-            Swal.fire(`Error to create category: ${error.response.data.error} `)
+            Swal.fire(`Error to create format: ${error.response.data.error} `)
                 .then(() => {
-                    showCategoryCreateBox();
+                    showFormatCreateBox();
                 })
         });
 }
 
-const getCategory = (id) => {
-    return axios.get(`${ENDPOINT}/categories/` + id);
+const getFormat = (id) => {
+    return axios.get(`${ENDPOINT}/formats/` + id);
 }
 
-const categoryEdit = () => {
+const formatEdit = () => {
     const id = document.getElementById("id").value;
     const description = document.getElementById("description").value;
 
-    axios.put(`${ENDPOINT}/categories/` + id, {
+    axios.put(`${ENDPOINT}/formats/` + id, {
         description: description,
     })
         .then((response) => {
-            Swal.fire(`Category ${response.data.description} updated`);
+            Swal.fire(`${response.data.description} format updated`);
             loadTable();
         }, (error) => {
-            Swal.fire(`Error to update category: ${error.response.data.error} `)
+            Swal.fire(`Error to update format: ${error.response.data.error} `)
                 .then(() => {
-                    showCategoryCreateBox(id);
+                    showFormatCreateBox(id);
                 })
         });
 }
 
-const categoryDelete = async (id) => {
-    const category = await getCategory(id);
-    const data = category.data;
-    axios.delete(`${ENDPOINT}/categories/` + id)
+const formatDelete = async (id) => {
+    const format = await getFormat(id);
+    const data = format.data;
+    axios.delete(`${ENDPOINT}/formats/` + id)
         .then((response) => {
-            Swal.fire(`Category ${data.description} deleted`);
+            Swal.fire(`${data.description} format deleted`);
             loadTable();
         }, (error) => {
-            Swal.fire(`Error to delete category: ${error.response.data.error} `);
+            Swal.fire(`Error to delete format: ${error.response.data.error} `);
             loadTable();
         });
 };
 
-const showCategoryCreateBox = () => {
+const showFormatCreateBox = () => {
     Swal.fire({
-        title: 'Create category',
+        title: 'Create format',
         html:
             '<input id="id" type="hidden">' +
             '<input id="description" class="swal2-input" placeholder="Description">',
         focusConfirm: false,
         showCancelButton: true,
         preConfirm: () => {
-            categoryCreate();
+            formatCreate();
         }
     });
 }
 
-const showCategoryEditBox = async (id) => {
-    const category = await getCategory(id);
-    const data = category.data;
+const showFormatEditBox = async (id) => {
+    const format = await getFormat(id);
+    const data = format.data;
     Swal.fire({
-        title: 'Edit Category',
+        title: 'Edit Format',
         html:
             '<input id="id" type="hidden" value=' + data.id + '>' +
             '<input id="description" class="swal2-input" placeholder="Description" value="' + data.description + '">',
         focusConfirm: false,
         showCancelButton: true,
         preConfirm: () => {
-            categoryEdit();
+            formatEdit();
         }
     });
 

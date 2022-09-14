@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const BookModel = require('../models/Book');
 const PublisherModel = require('../models/Publisher');
 const CategoryModel = require('../models/Category');
+const FormatModel = require('../models/Format');
 
 class BooksController {
 
@@ -34,7 +35,7 @@ class BooksController {
 
     if (params.category) {
       where.category = {
-        [Op.eq]: params.category
+        [Op.iLike]: `%${params.category}%`
       };
     }
 
@@ -57,6 +58,10 @@ class BooksController {
         model: PublisherModel,
         required: false,
         attribute: 'name'
+      }, {
+        model: FormatModel,
+        required: false,
+        attribute: 'description'
       }]
     });
     res.json(books);
@@ -102,7 +107,7 @@ class BooksController {
   }
 
   _validateData = async (data, id) => {
-    const attributes = ['title', 'author', 'publication_year', 'pages', 'CategoryId', 'PublisherId'];
+    const attributes = ['title', 'author', 'publication_year', 'pages', 'value', 'CategoryId', 'PublisherId', 'FormatId'];
     const book = {};
     for (const attribute of attributes) {
       if (!data[attribute]) {

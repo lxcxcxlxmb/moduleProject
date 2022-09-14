@@ -1,8 +1,7 @@
 const { Op } = require('sequelize');
-const CityModel = require('../models/City');
-const StateModel = require('../models/State');
+const FormatModel = require('../models/Format');
 
-class CitiesController {
+class FormatsController {
 
   index = async (req, res, next) => {
     const params = req.query;
@@ -13,104 +12,87 @@ class CitiesController {
     const order = params.order || 'ASC';
     const where = {};
 
-    if (params.name) {
-      where.name = {
-        [Op.iLike]: `%${params.name}%`
+    if (params.description) {
+      where.description = {
+        [Op.iLike]: `%${params.description}%`
       };
     }
 
-    if (params.cep) {
-      where.cep = {
-        [Op.iLike]: `%${params.cep}%`
-      };
-    }
-
-    if (params.StateId) {
-      where.StateId = {
-        [Op.eq]: params.StateId
-      };
-    }
-
-    const cities = await CityModel.findAll({
+    const formats = await FormatModel.findAll({
       where: where,
       limit: limit,
       offset: offset,
-      order: [[sort, order]],
-      include: [{
-        model: StateModel,
-        required: false,
-        attributes: ['name', 'province']
-      }]
+      order: [[sort, order]]
     });
-    res.json(cities);
+    res.json(formats);
   }
 
   create = async (req, res, next) => {
     try {
       const data = await this._validateData(req.body);
-      const city = await CityModel.create(data);
-      res.json(city);
+      const format = await FormatModel.create(data);
+      res.json(format);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
   show = async (req, res, next) => {
-    const city = await CityModel.findByPk(req.params.cityId);
-    res.json(city);
+    const format = await FormatModel.findByPk(req.params.formatId);
+    res.json(format);
   }
 
   update = async (req, res, next) => {
     try {
-      const id = req.params.cityId;
+      const id = req.params.formatId;
       const data = await this._validateData(req.body, id);
-      await CityModel.update(data, {
+      await FormatModel.update(data, {
         where: {
           id: id
         }
       });
-      res.json(await CityModel.findByPk(id));
+      res.json(await FormatModel.findByPk(id));
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
   delete = async (req, res, next) => {
-    await CityModel.destroy({
+    await FormatModel.destroy({
       where: {
-        id: req.params.cityId
+        id: req.params.formatId
       }
     });
     res.json({});
   }
 
   _validateData = async (data, id) => {
-    const attributes = ['name', 'cep', 'StateId'];
-    const city = {};
+    const attributes = ['description'];
+    const format = {};
     for (const attribute of attributes) {
       if (!data[attribute]) {
         throw new Error(`The attribute "${attribute}" is required.`);
       }
-      city[attribute] = data[attribute];
+      format[attribute] = data[attribute];
     }
 
-    if (await this._checkIfCityExists(city.cep, id)) {
-      throw new Error(`The city of CEP "${city.cep}" already exists.`);
+    if (await this._checkIfDescriptionExists(format.description, id)) {
+      throw new Error(`The format with description "${format.description}" already exists.`);
     }
 
-    return city;
+    return format;
   }
 
-  _checkIfCityExists = async (cep, id) => {
+  _checkIfDescriptionExists = async (description, id) => {
     const where = {
-      cep: cep
+      description: description
     };
 
     if (id) {
       where.id = { [Op.ne]: id }; // WHERE id != id
     }
 
-    const count = await CityModel.count({
+    const count = await FormatModel.count({
       where: where
     });
 
@@ -119,4 +101,4 @@ class CitiesController {
 
 }
 
-module.exports = new CitiesController();
+module.exports = new FormatsController();
