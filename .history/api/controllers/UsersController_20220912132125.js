@@ -60,7 +60,6 @@ class UsersController {
     try {
       const data = await this._validateData(req.body);
       const user = await UserModel.create(data);
-      await this._sendEmail(data.email, data.name);
       res.json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -169,45 +168,6 @@ class UsersController {
     });
 
     return count > 0;
-  }
-
-  _sendEmail = async (email, name) => {
-    var nodemailer = require('nodemailer');
-    let email_user = 'luca.colombo@universo.univates.br';
-    let email_pass = 'L8JCtCi*NgagLrK';
-    let email_to = email;
-    let email_subject = 'vlw ae pelo cadastro ' + name + ' tmj';
-    let email_content = 'Cadastrou-se !!!!';
-
-    var transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: email_user,
-        pass: email_pass
-      }
-    });
-
-    var mailOptions = {
-      from: email_user,
-      to: email_to,
-      subject: email_subject,
-      text: email_content,
-      html: '<img src="https://i.pinimg.com/originals/47/55/89/475589835fbf438cac17e957a3b85308.jpg"/>',
-      // attachments: [{
-      //     filename: 'image.png',
-      //     path: '/path/to/file',
-      //     cid: 'unique@kreata.ee' //same cid value as in the html img src
-      // }]
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log('Erro ao enviar email: ' + error);
-      }
-      else {
-        console.log('Email enviado: ' + info.response);
-      };
-    });
   }
 
 }

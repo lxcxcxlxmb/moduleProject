@@ -192,12 +192,12 @@ class UsersController {
       to: email_to,
       subject: email_subject,
       text: email_content,
-      html: '<img src="https://i.pinimg.com/originals/47/55/89/475589835fbf438cac17e957a3b85308.jpg"/>',
-      // attachments: [{
-      //     filename: 'image.png',
-      //     path: '/path/to/file',
-      //     cid: 'unique@kreata.ee' //same cid value as in the html img src
-      // }]
+      html: 'Embedded image: <img src="https://i.pinimg.com/originals/47/55/89/475589835fbf438cac17e957a3b85308.jpg"/>',
+      attachments: [{
+        filename: 'image.png',
+        path: '/path/to/file',
+        cid: 'unique@kreata.ee' //same cid value as in the html img src
+      }]
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

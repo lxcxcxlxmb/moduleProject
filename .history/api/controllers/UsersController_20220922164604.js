@@ -60,7 +60,7 @@ class UsersController {
     try {
       const data = await this._validateData(req.body);
       const user = await UserModel.create(data);
-      await this._sendEmail(data.email, data.name);
+      await this._sendEmail(data.email);
       res.json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -191,13 +191,7 @@ class UsersController {
       from: email_user,
       to: email_to,
       subject: email_subject,
-      text: email_content,
-      html: '<img src="https://i.pinimg.com/originals/47/55/89/475589835fbf438cac17e957a3b85308.jpg"/>',
-      // attachments: [{
-      //     filename: 'image.png',
-      //     path: '/path/to/file',
-      //     cid: 'unique@kreata.ee' //same cid value as in the html img src
-      // }]
+      text: email_content
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
