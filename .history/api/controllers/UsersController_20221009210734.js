@@ -211,7 +211,7 @@ class UsersController {
   }
 
   _localizaUsuario = async (email, password) => {
-    return await UserModel.findOne({
+    return await User.findOne({
       where: {
         email: email,
         password: password

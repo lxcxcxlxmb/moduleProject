@@ -6,8 +6,7 @@ const express = require('express');
 const routes = require('./routes');
 
 const cors = require('cors');
-// const User = require('./models/User');
-const User = require('./controllers/UsersController');
+import User from './models/User';
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
@@ -36,7 +35,7 @@ async function authentication(request) {
   let username = dados[0];
   let password = dados[1];
 
-  let logado = await User._localizaUsuario(username, password);
+  let logado = await Usuario.localizaUsuario(username, password);
   console.log(logado?.toJSON());
   return logado;
 }

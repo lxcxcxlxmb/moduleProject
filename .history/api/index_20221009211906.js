@@ -6,8 +6,7 @@ const express = require('express');
 const routes = require('./routes');
 
 const cors = require('cors');
-// const User = require('./models/User');
-const User = require('./controllers/UsersController');
+const User = require('./models/User');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
