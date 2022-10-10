@@ -173,8 +173,8 @@ class UsersController {
 
   _sendEmail = async (email, name) => {
     var nodemailer = require('nodemailer');
-    let email_user = 'luca.colombo@universo.univates.br';
-    let email_pass = 'L8JCtCi*NgagLrK';
+    let email_user = '';
+    let email_pass = '';
     let email_to = email;
     let email_subject = 'vlw ae pelo cadastro ' + name + ' tmj';
     let email_content = 'Cadastrou-se !!!!';
